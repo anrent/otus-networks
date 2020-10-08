@@ -35,4 +35,16 @@ ip address 192.168.1.1 255.255.255.0       //Адреса для S2 - .1 дял 
 exit
 copy running-config startup-config         //сохранение конфигурации
 ```
+Проверка работоспособности:
 
+Доступность S2 от S1:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/s1-s2.PNG)
+
+Доступность S3 от S1:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/s1-s3.PNG)
+
+Доступность S3 от S2:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/s2-s3.PNG)
