@@ -62,5 +62,25 @@ copy running-config startup-config         //сохранение конфигу
  * Включены порты F0/2 и F0/4 на всех коммутаторах.
  * Выведены данные состояния протокола spanning-tree.
  
+Ниже приведён вывод информации о состоянии протокола STP
+
+Для коммутатора S1:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/S1stp.PNG)
+
+
+Для коммутатора S2:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/S2stp.PNG)
+
+
+Для коммутатора S3:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/S3stp.PNG)
+
+
+На схеме ниже наглядно указано состояние портов и root коммутатор:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/STP-pt1.PNG)
 
 
