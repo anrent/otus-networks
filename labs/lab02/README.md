@@ -93,6 +93,32 @@ copy running-config startup-config         //сохранение конфигу
 
 При изменении в данной топологии стоимости заблокированного порта Fa0/2 коммутатора S2 в меньшую сторону, произойдёт конвергенция и заблокированным станет Fa0/2 S1. По причине того, что корневая стоимость через Fa0/2 коммутатора S2 будет меньше и он станет назнеченным, а Fa0/2 S1, соответственно заблокированным.
 
+Изменение стоимости порта:
+
+```
+interface fastEthernet 0/4
+spanning-tree vlan 1 cost 18
+```
+После изменения стоимости порта он переходин в режим прослушивания, пересылая только BPDU фреймы:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/s2-18-lsn.PNG)
+
+Затем в режим обучения, так же пересылая только BPDU, но и изучая информацию о MAC фдресах из приходящих на порт фреймов:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/s2-18-lrn.PNG)
+
+И наконец конвергенция завершается переводом этого порта в режим пересылки:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/s2-18-fwd.PNG)
+
+Соответственно состояние порта коммутатора S1, смотрящего в сторону S2 изменяется на блокировку:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/s1-18-blk.PNG)
+
+И итоговое состояние портов сети выглядит следующим образом:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab02/STP-s2-18.PNG)
+
 
 ## Часть 4:	Наблюдение за процессом выбора протоколом STP порта, исходя из приоритета портов
 
