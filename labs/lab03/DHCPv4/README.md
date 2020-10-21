@@ -126,4 +126,102 @@ R2(config-if)# no shutdown
 R2(config)# ip route 0.0.0.0 0.0.0.0 10.0.0.1               // настройка маршрута по умолчанию до R1
 ```
 
+#### Создание VLAN на коммутаторе S1
 
+Создание vlan согласно таблице:
+
+```
+S1(config)# vlan 100
+S1(config-vlan)# name Clients
+S1(config-vlan)# vlan 200
+S1(config-vlan)# name Management
+S1(config-vlan)# vlan 999
+S1(config-vlan)# name Parking_Lot
+S1(config-vlan)# vlan 1000
+S1(config-vlan)# name Native
+S1(config-vlan)# exit
+```
+
+Настройка vlan 200 в качесте интерфейса управления на коммутаторе S1:
+
+```
+S1(config)# interface vlan 200
+S1(config-if)# ip address 192.168.1.66 255.255.255.224
+S1(config-if)# no shutdown
+S1(config-if)# exit
+S1(config)# ip default-gateway 192.168.1.65                 // настройка шлюза по умолчанию, его роль выполняет R1
+```
+Настройка vlan 1 в качесте интерфейса управления на коммутаторе S2:
+
+```
+S2(config)# interface vlan 1
+S2(config-if)# ip address 192.168.1.98 255.255.255.240
+S2(config-if)# no shutdown
+S2(config-if)# exit
+S2(config)# ip default-gateway 192.168.1.97                 // настройка шлюза по умолчанию, его роль выполняет R2
+```
+
+
+Отключение неиспользуемых портов на S1 и S2:
+
+```
+S1(config)# interface range e0/1–2
+S1(config-if-range)# switchport mode access
+S1(config-if-range)# switchport access vlan 999
+S1(config-if-range)# shutdown
+S1(config-if-range)# exit
+```
+
+```
+S2(config)# interface range e0/1 – 2
+S2(config-if-range)# switchport mode access
+S2(config-if-range)# shutdown
+S2(config-if-range)# exit
+```
+
+#### Настройка VLAN на интерфейсах коммутаторов
+
+Настройка пользовательского интерфейса на коммутаторе S1:
+
+```
+S1(config)# interface e0/3
+S1(config-if)# switchport mode access        // в режиме доступа
+S1(config-if)# switchport access vlan 100    // пользовательский VLAN
+```
+
+Настройка магистрального интерфейса на коммутаторе S1:
+
+```
+S1(config)# interface e0/0
+S1(config-if)# switchport mode trunk                             //в режиме транка
+S1(config-if-range)# switchport trunk native vlan 1000           //native vlan для магистрального интерфейса
+S1(config-if-range)# switchport trunk allowed vlan 100,200,1000  //vlan разрешённые для работы в транке
+```
+
+Согласно заданию, VLAN на S2 не настраивается - доступ происходит через default vlan 1.
+
+### Часть 2: Настройка и проверка DHCP на маршрутизаторе R1
+
+#### Настройка DHCP пулов на две подсети на R1
+
+Настройка пула для сети 192.168.1.0/24:
+
+```
+R1(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.5          //исключаем из пула раздачи первые 5 адресов
+R1(config)# ip dhcp pool R1_Client_LAN                                //создаём первый клиентский пул
+R1(dhcp–config)# network 192.168.1.0 255.255.255.192                  //присваем пулу диапазон адресов
+R1(dhcp–config)# domain-name ccna-lab.com                             //настройка доменного имени
+R1(dhcp–config)# default-router 192.168.1.1                           //шлюз по умолчанию для пула
+R1(dhcp–config)# lease 2 12 30                                        //время жизни выданных адресов 2 дня 12 часов 30 минут
+```
+
+Настройка пула для сети 192.168.1.96/28:
+
+```
+R1(config)# ip dhcp excluded-address 192.168.1.97 192.168.1.101
+R1(config)# ip dhcp pool R2_Client_LAN
+R1(dhcp–config)# network 192.168.1.96 255.255.255.240
+R1(dhcp–config)# default-router 192.168.1.97
+R1(dhcp–config)# domain-name ccna-lab.com
+R1(dhcp–config)# lease 2 12 30
+```
