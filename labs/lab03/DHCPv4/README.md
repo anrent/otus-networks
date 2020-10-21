@@ -207,12 +207,12 @@ S1(config-if-range)# switchport trunk allowed vlan 100,200,1000  //vlan разр
 Настройка пула для сети 192.168.1.0/24:
 
 ```
-R1(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.5          //исключаем из пула раздачи первые 5 адресов
-R1(config)# ip dhcp pool R1_Client_LAN                                //создаём первый клиентский пул
-R1(dhcp–config)# network 192.168.1.0 255.255.255.192                  //присваем пулу диапазон адресов
-R1(dhcp–config)# domain-name ccna-lab.com                             //настройка доменного имени
-R1(dhcp–config)# default-router 192.168.1.1                           //шлюз по умолчанию для пула
-R1(dhcp–config)# lease 2 12 30                                        //время жизни выданных адресов 2 дня 12 часов 30 минут
+R1(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.5    //исключаем из пула раздачи первые 5 адресов
+R1(config)# ip dhcp pool R1_Client_LAN                          //создаём первый клиентский пул
+R1(dhcp–config)# network 192.168.1.0 255.255.255.192            //присваем пулу диапазон адресов
+R1(dhcp–config)# domain-name ccna-lab.com                       //настройка доменного имени
+R1(dhcp–config)# default-router 192.168.1.1                     //шлюз по умолчанию для пула
+R1(dhcp–config)# lease 2 12 30                                  //время жизни выданных адресов 2 дня 12 часов 30 минут
 ```
 
 Настройка пула для сети 192.168.1.96/28:
@@ -225,3 +225,34 @@ R1(dhcp–config)# default-router 192.168.1.97
 R1(dhcp–config)# domain-name ccna-lab.com
 R1(dhcp–config)# lease 2 12 30
 ```
+
+### Часть 3: Настройка и проверка DHCP Relay на маршрутизаторе R2
+
+```
+R2(config)# interface f0/0                   // интерфейс, с которого будут ретранслироваться входящие запросы на R1
+R2(config-if)# ip helper-address 10.0.0.1    // адрес DHCP сервера - R1
+R2(config-if)# exit
+```
+
+#### Проверка настройки DHCP
+
+Вывод комманды show ip dhcp pool:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv4/show_ip_dhcp_pool.png)
+
+Вывод комманды show ip dhcp bindings:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv4/ip_dhcp_binding.png)
+
+Вывод комманды show ip dhcp server statistics:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv4/show_ip_dhcp_pool.png)
+
+
+Как видно по скриншотам, настройка верна, все клиенты получают ip адреса.
+
+Проверяем доступность между конечными клиентами:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv4/ping.png)
+
+Клиенты видят друг-друга, настройка оборудования верна.
