@@ -115,8 +115,6 @@ R2(config-if)# ip address 192.168.1.97 255.255.255.240      // настройк�
 R2(config-if)# no shutdown
 R2(config-if)# exit
 
-    Configure interface F0/0/0 for each router based on the IP Addressing table above.
-
 R1(config)# interface f0/1
 R1(config-if)# ip address 10.0.0.1 255.255.255.252          // настройка ip адреса для интерфейса в соответствии с таблицей адресации
 R1(config-if)# no shutdown
