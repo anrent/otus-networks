@@ -40,6 +40,9 @@
 #### Часть 2: Настройка двух DHCP серверов на R1
 #### Часть 3: Настройка DHCP Relay на R2
 
+
+
+
 ### Часть 1: Создание сети и настройка основных параметров устройства.
 
 #### Cхема лабораторного стенда, выполненная в GNS3:
@@ -84,6 +87,45 @@ interface vlan 1
 ip address 192.168.1.1 255.255.255.0       //Адреса в таблице адресации
 exit
 copy running-config startup-config         //сохранение конфигурации
+```
+
+#### Настройки маршрутизации между VLAN на  R1
+
+```
+R1(config)# interface f0/0.100                              // создание подинтерфейса для vlan 100
+R1(config-subif)# description Client Network                // описание интерфейса
+R1(config-subif)# encapsulation dot1q 100                   // включение инкапсуляции dot1q для создания trunk канала
+R1(config-subif)# ip address 192.168.1.1 255.255.255.192    // настройка ip адреса для интерфейса, используя первый адрес подсети
+
+R1(config-subif)# interface f0/0.200                        // создание подинтерфейса для vlan 200
+R1(config-subif)# description Management Network            // описание интерфейса
+R1(config-subif)# encapsulation dot1q 200                   // включение инкапсуляции dot1q для создания trunk канала
+R1(config-subif)# ip address 192.168.1.65 255.255.255.224   // настройка ip адреса для интерфейса, используя первый адрес подсети
+
+R1(config-subif)# interface f0/0.1000                       // создание подинтерфейса для vlan 200
+R1(config-subif)# description Native VLAN                   // описание интерфейса
+R1(config-subif)# encapsulation dot1q 1000 native           // включение инкапсуляции dot1q для native vlan
+```
+
+#### Настройка F0/0 на R2, затем F0/1 и настройка статических маршрутов на обеих роутерах
+
+```
+R2(config)# interface f0/0
+R2(config-if)# ip address 192.168.1.97 255.255.255.240      // настройка ip адреса для интерфейса, используя первый адрес подсети
+R2(config-if)# no shutdown
+R2(config-if)# exit
+
+    Configure interface F0/0/0 for each router based on the IP Addressing table above.
+
+R1(config)# interface f0/1
+R1(config-if)# ip address 10.0.0.1 255.255.255.252          // настройка ip адреса для интерфейса в соответствии с таблицей адресации
+R1(config-if)# no shutdown
+R1(config)# ip route 0.0.0.0 0.0.0.0 10.0.0.2               // настройка маршрута по умолчанию до R2
+
+R2(config)# interface f0/1
+R2(config-if)# ip address 10.0.0.2 255.255.255.252          // настройка ip адреса для интерфейса в соответствии с таблицей адресации
+R2(config-if)# no shutdown
+R2(config)# ip route 0.0.0.0 0.0.0.0 10.0.0.1               // настройка маршрута по умолчанию до R1
 ```
 
 
