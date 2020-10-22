@@ -90,3 +90,22 @@ ipv6 route ::/0 2001:db8:acad:2::1      //Маршрут по умолчанию
 
 ![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv6/SLAAC_PC1.png)
 
+
+### Часть 3: Настройка и проверка Stateless DHCPv6 на маршрутизаторе R1
+
+
+```
+ipv6 dhcp pool R1-STATELESS             // создание пула
+dns-server 2001:db8:acad::254           // определение DNS сервера для раздачи клиентам
+domain-name STATELESS.com               // определение доменного имени
+interface f0/1                          // настройка интерфейса, на котором будет работать DHCP сервер
+ipv6 nd other-config-flag               
+ipv6 dhcp server R1-STATELESS
+exit
+exit
+copy running-config startup-config
+```
+В качестве клиента использовался роутер, т.к эмулятор компьютера имеет ограниченные возможности по ipv6. Как видно из скриншота, клиент получил параметры DNS и домена, а так же видна доступность R1:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv6/Stateless.png)
+
