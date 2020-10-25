@@ -70,7 +70,7 @@ ipv6 route ::/0 2001:db8:acad:2::2      //Маршрут по умолчанию
 ```
 interface f0/0
 ipv6 address fe80::2 link-local
-ipv6 address 2001:db8:acad:2::1/64
+ipv6 address 2001:db8:acad:2::2/64
 no shutdown
 interface f0/1
 ipv6 address fe80::1 link-local
