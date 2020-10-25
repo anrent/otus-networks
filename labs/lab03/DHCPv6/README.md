@@ -109,3 +109,44 @@ copy running-config startup-config
 
 ![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv6/Stateless.png)
 
+### Часть 4: Настройка и проверка Stateful DHCPv6 на маршрутизаторе R1
+
+Настройка пула для Stateful DHCPv6 на маршрутизаторе R1:
+
+```
+ipv6 dhcp pool R2-STATEFUL                // создание пула
+address prefix 2001:db8:acad:3:aaa::/80   // указание сети для пула
+dns-server 2001:db8:acad::254             // определение DNS сервера для раздачи клиентам
+domain-name STATEFUL.com                  // определение доменного имени
+```
+
+Назначение пула на интерфейс:
+
+```
+interface g0/0/0
+ipv6 dhcp server R2-STATEFUL
+```
+
+### Часть 5: Настройка и проверка DHCPv6 Relay на маршрутизаторе R2
+
+В качестве клиента использовался роутер, т.к эмулятор компьютера имеет ограниченные возможности по ipv6. Как видно из скриншота, клиент получил настройки посредством SLAAC:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv6/SLAAC_Client2.PNG)
+
+## Настройка DHCP relay на маршрутизаторе R2
+
+```
+interface g0/0/1                                        // интерфейс в сторону клиентского оборудования
+ipv6 nd managed-config-flag                             
+ipv6 dhcp relay destination 2001:db8:acad:2::1 g0/0/0   // указание ретранслировать dhcp Запросы на R1
+```
+## Проверка работы DHCP relay,
+
+Как видно из скриншота, клиент получил параметры, согласно настройкам DHCP сервера на R1:
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv6/Statefull.PNG)
+
+При этом доступен как R1, так и первый клиент.
+
+![Image alt](https://github.com/anrent/otus-networks/blob/main/labs/lab03/DHCPv6/ping.PNG)
+
