@@ -74,7 +74,7 @@ ipv6 address 2001:db8:acad:2::2/64
 no shutdown
 interface f0/1
 ipv6 address fe80::1 link-local
-ipv6 address 2001:db8:acad:3::2/64
+ipv6 address 2001:db8:acad:3::1/64
 no shutdown
 ipv6 route ::/0 2001:db8:acad:2::1      //Маршрут по умолчанию в сторону R1
 ```
