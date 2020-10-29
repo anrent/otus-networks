@@ -1,3 +1,7 @@
+# Составление IPv4/v6 плана сети.
+
+![Image alt](https://github.com/anrent/otus-networks/edit/main/labs/lab04/topo.PNG)
+
 ```
 Москва
 MAIN NET 10.1.0.0/16
