@@ -10,7 +10,7 @@
 
 ## Часть 1. Разработка адресного пространства для лабораторного стенда
 
-![Image alt](https://github.com/anrent/otus-networks/edit/main/labs/lab04/topology.PNG)
+![Image alt](https://github.com/anrent/otus-networks/edit/main/labs/lab04/top.PNG)
 
 ```
 Москва
