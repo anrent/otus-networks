@@ -1,6 +1,6 @@
 # Составление IPv4/v6 плана сети.
 
-![Image alt](https://github.com/anrent/otus-networks/edit/main/labs/lab04/topo.PNG)
+![Image alt](https://github.com/anrent/otus-networks/edit/main/labs/lab04/topology.PNG)
 
 ```
 Москва
